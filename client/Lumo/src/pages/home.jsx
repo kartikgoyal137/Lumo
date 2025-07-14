@@ -3,7 +3,7 @@ import axios from "axios"
 import Card from '../components/channelCard.jsx'
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
-import bg1 from '../assets/bg1.png'
+import bg3 from '../assets/bg3.png'
 import bg2 from '../assets/bg2.png'
 import bg4 from '../assets/bg4.svg'
 
@@ -17,7 +17,6 @@ export default function Home() {
   async function fetchChannel(id, num){
     const res = await axios.get(`http://localhost:4000/api/channel/${id}/${num}`)
     const data = res.data
-    console.log(data)
     if(num===1){
       setMyChannels(data)
     }
@@ -38,12 +37,14 @@ export default function Home() {
     fetchChannel(user.id, 0)
 
   }
+  
   async function handleLeave(id) {
     const res = await axios.post(`http://localhost:4000/api/channel/${user.id}/leave`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
     console.log(res.data)
     fetchChannel(user.id, 1)
     fetchChannel(user.id, 0)
   }
+  
 
   async function handleEnter(id) {
     navigate(`/channel/${id}`)
@@ -72,7 +73,7 @@ export default function Home() {
 </nav>
 
 
-  <div className="container-fluid w-100 h-100" style={{backgroundImage: `url(${bg4})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '92vh'}}>
+  <div className="container-fluid w-100 h-100" style={{backgroundImage: `url(${bg3})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '92vh'}}>
 
   <div className="container pt-4 mb-3">
     <h2>My Channels</h2>
@@ -89,6 +90,7 @@ export default function Home() {
               }}
               btnText="Enter"
               OnclickFunc={()=>{handleEnter(c.id)}}
+              handleLeave={()=>{handleLeave(c.id)}}
             />
           </div>
         ))}

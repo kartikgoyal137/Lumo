@@ -1,7 +1,15 @@
 import { Hash } from 'lucide-react'
 
-export default function ChannelCard({ channel, btnText, OnclickFunc, id }) {
+export default function ChannelCard({ channel, btnText, OnclickFunc, handleLeave }) {
 
+  const Leave = () => {
+      if(btnText==="Enter") {
+        return (
+          <button className='btn btn-danger w-25 ms-2 mt-2' onClick={() => {handleLeave(channel.id)}}>Leave</button>
+        )
+      }
+  }
+  
 
   return (
     <div className="card shadow-sm mb-3 rounded-4" style={{ maxWidth: '22rem' }}>
@@ -23,7 +31,8 @@ export default function ChannelCard({ channel, btnText, OnclickFunc, id }) {
         <small className="" style={{color: 'whitesmoke'}}>
           {channel.members?.length || 0} members
         </small>
-        <button className='btn btn-primary w-25 ms-2 mt-2' onClick={() => {OnclickFunc(channel.id)}}>{btnText}</button>
+        <button className='btn btn-success w-25 ms-2 mt-2' onClick={() => {OnclickFunc(channel.id)}}>{btnText}</button>
+        {Leave()}
         </div>
       </div>
     </div>

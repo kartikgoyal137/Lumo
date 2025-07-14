@@ -59,7 +59,7 @@ router.post('/:user_id/leave', verify, async (req,res) => {
     const userid = req.params.user_id
     const channelid = req.body.channel_id
 
-    const channel = await Channel.find(channelid)
+    const channel = await Channel.findById(channelid)
     channel.members = channel.members.filter((ele) => {
         ele.toString() != userid
     })
