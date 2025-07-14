@@ -11,7 +11,18 @@ const SECRET_KEY = process.env.SECRET_KEY
 
 //add member, remove member, create channel, get channel data, get specific channel data
 
-
+router.get('/info/:id', async (req,res) => {
+    const cID = req.params.id
+    
+    try {
+        const currChannel = await Channel.findById(cID)
+        res.json({info : currChannel})
+        
+    }  catch (err) {
+    console.error('Failed to fetch channel:', err)
+    res.status(500).json({ error: 'Server error' })
+    }
+})
 
 
 router.get('/:user_id/:num', async (req,res) => {
@@ -60,9 +71,10 @@ router.post('/:user_id/leave', verify, async (req,res) => {
     const channelid = req.body.channel_id
 
     const channel = await Channel.findById(channelid)
-    channel.members = channel.members.filter((ele) => {
-        ele.toString() != userid
-    })
+    const array = channel.members.filter((ele) => 
+        ele.toString() != userid.toString()
+    ) 
+    channel.members = array
     await channel.save()
     res.send('left channel successfully!')
 })

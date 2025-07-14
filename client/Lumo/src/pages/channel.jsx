@@ -16,6 +16,7 @@ export default function Channel() {
 
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [channelInfo, setChannelInfo] = useState({})
 
 
   const sendMessage = () => {
@@ -34,6 +35,8 @@ export default function Channel() {
 
     socket.on('receive-message', handleReceive)
 
+    getChannel()
+
     return () => {
     socket.off('receive-message', handleReceive)
   }
@@ -42,6 +45,13 @@ export default function Channel() {
   function handleMessage(e) {
     setMessage(e.target.value)
   }
+
+  const getChannel = async () => {
+    const res = await axios.get(`http://localhost:4000/api/channel/info/${channel_id}`)
+    const data = res.data
+    setChannelInfo(data.info)
+  }
+
   
 
   
@@ -77,9 +87,7 @@ export default function Channel() {
 </nav>
 
 
-
-WELCOME to {channel_id}
-<div className="container-fluid mx-5" style={{overflowX : 'hidden'}}>
+<div className="container-fluid mx-5 my-4" style={{overflowX : 'hidden'}}>
   <div className="row">
 
     <div className="col-2 rounded-4 mx-3" style={{border: '4px solid #000000'}}>
@@ -103,7 +111,8 @@ WELCOME to {channel_id}
 
     
   <div className="col-2 ms-3" style={{ background: "#ff9f9f"}}>
-    <h1>Channel Name</h1>
+    <h1>{channelInfo.name}</h1>
+    <h4>{channelInfo.description}</h4>
   </div>
   </div>
 
