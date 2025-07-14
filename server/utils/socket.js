@@ -1,5 +1,7 @@
 const { Server } = require('socket.io')
 const http = require('http')
+const Message = require('../models/message.js')
+const User = require('../models/user.js')
 
 function initSocket(app) {
   const server = http.createServer(app)
@@ -18,9 +20,18 @@ function initSocket(app) {
       console.log('channel joined')
     })
 
-    socket.on('send-message', ({ channel_id, message }) => {
-      socket.to(channel_id).emit('receive-message', message)
+    socket.on('send-message', async ({sender, channel_id, message }) => {
+      const user = await User.findById(sender)
+      const name = user.name
       console.log('message sent')
+      const newMessage = new Message({
+      sender : sender,
+      content: message ,
+      channel: channel_id
+      })
+      const savedMessage = await newMessage.save()
+      await savedMessage.populate('sender', 'name')
+      io.to(channel_id).emit('receive-message', savedMessage)
     })
 
     socket.on('disconnect', () => {

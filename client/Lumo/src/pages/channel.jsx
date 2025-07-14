@@ -1,10 +1,12 @@
 import { useState } from "react"
 import axios from "axios"
-import messageBox from '../components/messageBox.jsx'
+import MessageBox from '../components/messageBox.jsx'
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useParams } from 'react-router-dom'
 import io from 'socket.io-client'
+import { useRef } from "react"
+
 
 const socket = io('http://localhost:4000')
 
@@ -21,21 +23,21 @@ export default function Channel() {
 
   const sendMessage = () => {
     if(message === '') return;
-    socket.emit('send-message', { channel_id, message })
-    setMessages(prev => [...prev, message])
+    socket.emit('send-message', {sender : user.id  ,channel_id : channel_id, message: message })
     setMessage('')
   }
 
   useEffect(() => {
     socket.emit('join-channel', channel_id)
 
-    const handleReceive = (msg) => {
-      setMessages(prev => [...prev, msg])
+    const handleReceive = (data) => {
+      setMessages(prev => [...prev, data])
     }
 
     socket.on('receive-message', handleReceive)
 
     getChannel()
+    getMessage()
 
     return () => {
     socket.off('receive-message', handleReceive)
@@ -52,16 +54,22 @@ export default function Channel() {
     setChannelInfo(data.info)
   }
 
-  
-
-  
-
-  async function handleLeave(id) {
-    const res = await axios.post(`http://localhost:4000/api/channel/${user.id}/leave`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
-    console.log(res.data)
-    fetchChannel(user.id, 1)
-    fetchChannel(user.id, 0)
+  const getMessage = async () => {
+    const res = await axios.get(`http://localhost:4000/api/channel/message/${channel_id}`)
+    const data = res.data.info
+    setMessages(data)
+    console.log(data)
   }
+
+  
+  const scrollRef = useRef(null)
+  useEffect(() => {
+  if (scrollRef.current) {
+    scrollRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+}, [messages])
+
+
   
 
 
@@ -95,11 +103,13 @@ export default function Channel() {
     </div>
     <div className="col-6 rounded-4 mx-3" style={{position: 'relative', border: '5px solid #a3e614e2', minHeight: '75vh'}}>
 
-    <ul>
-      {messages.map((message, id) => {
-        return (<li key={id}>{message}</li>)
-      })}
-    </ul>
+<div className="overflow-auto" style={{ maxHeight: '60vh' }}>
+  {messages.map((msg, i) => (
+    <MessageBox key={i} message={msg} isOwn={msg.sender?.id === user.id} />
+  ))}
+   <div ref={scrollRef}></div>
+</div>
+
 
     <div style={{position: 'absolute', bottom: '0'}}>
     <input value={message} onChange={(e) => {handleMessage(e)}}/>

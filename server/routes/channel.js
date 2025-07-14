@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const router = Router()
 const verify = require('../middleware/verifyToken.js')
+const Message = require('../models/message.js')
 
 const SECRET_KEY = process.env.SECRET_KEY
 
@@ -23,6 +24,19 @@ router.get('/info/:id', async (req,res) => {
     res.status(500).json({ error: 'Server error' })
     }
 })
+
+router.get('/message/:id', async (req, res) => {
+  try {
+    const messages = await Message.find({ channel: req.params.id })
+      .populate('sender', 'name')
+
+    res.json({ info: messages })
+  } catch (err) {
+    console.error('Failed to fetch messages:', err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
 
 
 router.get('/:user_id/:num', async (req,res) => {
