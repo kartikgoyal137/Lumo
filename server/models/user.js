@@ -9,6 +9,16 @@ const userSchema = new mongoose.Schema({
     channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Channel' }]
 }, {timestamps: true})
 
+userSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id
+    delete ret._id
+  }
+})
+
 const user = mongoose.model('User', userSchema)
 
 module.exports = user
+

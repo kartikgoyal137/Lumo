@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { int } = require('three/tsl')
 
 const channelSchema = new mongoose.Schema({
     name : { type: String, required: true},
@@ -7,6 +8,15 @@ const channelSchema = new mongoose.Schema({
     admins : [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     createdBy : {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 }, {timestamps: true})
+
+channelSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id
+    delete ret._id
+  }
+})
 
 const channel = mongoose.model('Channel', channelSchema)
 

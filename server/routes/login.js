@@ -3,20 +3,32 @@ const router = Router()
 const User = require('../models/user.js')
 const hash = require('../utils/hash.js')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const dotenv = require('dotenv')
 
-const KEY = process.env.SECRET_KEY
+dotenv.config()
+
+const SECRET_KEY = process.env.SECRET_KEY
 
 
 
 
 router.post('/signup', async (req,res) => { //signup
+    const existing = await User.findOne({ email : req.body.email })
+    if (existing) {
+        return res.status(400).json({ error: 'User already exists' })
+    }
+
     try {
         const {name, email} = req.body
         const password = await hash(req.body.password)
         const newUser = new User({name, email, password})
         await newUser.save()
+        console.log('Entry done')
+        res.send()
     }
-    catch {
+    catch (err) {
+        console.log('failed', err)
         res.send('error in updating database')
     }
 })
@@ -25,20 +37,23 @@ router.post('/auth', async (req,res) => { //login
     const {email, password} = req.body
     try {
         const user = await User.findOne({email})
-        const isMatch = await bcrypt.compare(password, user.password)
         if(!user){
-            res.send('User not found!')
+            console.log('no user')
+            return res.json({error : 'User not found!'})
         }
-        else if(!isMatch) {
-            res.send('Incorrect password!')
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch) {
+            console.log('wrong password ')
+            return res.json({error : 'Incorrect password!'})
         }
-
-        const userInfo = {email : user.email, id : user._id, name : user.name}
-        const token = jwt.sign(userInfo, KEY, {expiresIn: "1h"})
-
-        res.json({token, userInfo})
+        console.log(user)
+        const userInfo = {email : user.email, id : user.id, name : user.name}
+        const token = jwt.sign(userInfo, SECRET_KEY, {expiresIn: "10h"})
+        
+        return res.json({token, userInfo})
     }
-    catch (err) {
+    catch (err) { 
+        console.log(err)
         res.send(err)
     }
 })
