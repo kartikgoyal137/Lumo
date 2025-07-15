@@ -37,6 +37,18 @@ router.get('/message/:id', async (req, res) => {
   }
 })
 
+router.get('/members/:id', async (req, res) => {
+  try {
+    const channel = await Channel.findById(req.params.id)
+      .populate('members', 'name')
+
+    res.json({ info: channel })
+  } catch (err) {
+    console.error('Failed to fetch messages:', err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
 
 
 router.get('/:user_id/:num', async (req,res) => {

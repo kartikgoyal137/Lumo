@@ -6,6 +6,7 @@ import { useEffect } from "react"
 import { useParams } from 'react-router-dom'
 import io from 'socket.io-client'
 import { useRef } from "react"
+import MemberCard from "../components/memberCard.jsx"
 
 
 const socket = io('http://localhost:4000')
@@ -19,6 +20,7 @@ export default function Channel() {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
   const [channelInfo, setChannelInfo] = useState({})
+  const [members, setMembers] = useState([])
 
 
   const sendMessage = () => {
@@ -38,6 +40,7 @@ export default function Channel() {
 
     getChannel()
     getMessage()
+    getMembers()
 
     return () => {
     socket.off('receive-message', handleReceive)
@@ -69,6 +72,12 @@ export default function Channel() {
   }
 }, [messages])
 
+  const getMembers = async () => {
+    const res = await axios.get(`http://localhost:4000/api/channel/members/${channel_id}`)
+    const data = res.data.info.members
+    setMembers(data)
+  }
+
 
   
 
@@ -95,32 +104,49 @@ export default function Channel() {
 </nav>
 
 
-<div className="container-fluid mx-5 my-4" style={{overflowX : 'hidden'}}>
+<div className="container-fluid px-5 py-4" style={{overflowX : 'hidden', background: "#333333"}}>
   <div className="row">
 
-    <div className="col-2 rounded-4 mx-3" style={{border: '4px solid #000000'}}>
+    <div className="col-2 rounded-4 mx-3 d-none d-md-block" style={{border: '4px solid #ff7f50', background: "whitesmoke", overflowY: 'auto'}}>
+{members.map((ele) => 
+  <MemberCard name={ele.name} isOnline={ele.status}/>
+)}
+  </div>
+    <div className="col-md-6 col-10 rounded-4 mx-3" style={{position: 'relative', border: '5px solid #ff7f50', minHeight: '75vh', background: "whitesmoke"}}>
 
-    </div>
-    <div className="col-6 rounded-4 mx-3" style={{position: 'relative', border: '5px solid #a3e614e2', minHeight: '75vh'}}>
-
-<div className="overflow-auto" style={{ maxHeight: '60vh' }}>
+<div className="overflow-auto" style={{ maxHeight: '60vh'}}>
   {messages.map((msg, i) => (
     <MessageBox key={i} message={msg} isOwn={msg.sender?.id === user.id} />
   ))}
    <div ref={scrollRef}></div>
 </div>
 
+<div className="position-absolute bottom-0 start-0 end-0 p-3 bg-light border-top">
+  <div className="d-flex gap-2">
+    <input
+      type="text"
+      value={message}
+      onChange={(e) => handleMessage(e)}
+      placeholder="Type a message..."
+      className="form-control rounded-pill"
+      style={{padding: '10px 15px', fontSize: '1rem', background: '#fff'}}
+    />
+    <button
+      className="btn btn-primary rounded-pill"
+      onClick={sendMessage}
+      style={{padding: '10px 20px', fontSize: '1rem', whiteSpace: 'nowrap'}}
+    >
+      Send
+    </button>
+  </div>
+</div>
 
-    <div style={{position: 'absolute', bottom: '0'}}>
-    <input value={message} onChange={(e) => {handleMessage(e)}}/>
-    <div className="btn btn-primary" onClick={sendMessage}>Send</div>
-    </div>
 
 
     </div>
 
     
-  <div className="col-2 ms-3" style={{ background: "#ff9f9f"}}>
+  <div className="col-2 ms-3 d-none d-md-block rounded-4" style={{ background: "#333333", color: "white"}}>
     <h1>{channelInfo.name}</h1>
     <h4>{channelInfo.description}</h4>
   </div>

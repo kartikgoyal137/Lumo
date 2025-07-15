@@ -50,6 +50,10 @@ export default function Home() {
     navigate(`/channel/${id}`)
   }
 
+  const newChannel = async () => {
+      navigate('/newchannel')
+  }
+
 
   return (
   <>
@@ -66,6 +70,9 @@ export default function Home() {
         <li className="nav-item me-2">
           <a className="nav-link active btn btn-dark me-4" style={{color: "white"}} href="#">Hey! {user?.name || 'User'}</a>
         </li>
+        <li className="nav-item me-2">
+          <a className="nav-link active btn btn-dark me-4" onClick={newChannel} style={{color: "white"}} href="#">Create Channel</a>
+        </li>
         
       </ul>
     </div>
@@ -80,7 +87,7 @@ export default function Home() {
     <div className="container-fluid py-2">
       <div className="row">
         {myChannels.map(c => (
-          <div className="col-xxl-3 col-5 mb-1" key={c.id}>
+          <div className="col-xxl-3 col-md-6 col-12 mb-1" key={c.id}>
             <Card
               id={c.id}
               channel={{

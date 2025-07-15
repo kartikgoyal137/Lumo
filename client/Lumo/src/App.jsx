@@ -5,6 +5,7 @@ import Home from './pages/home.jsx'
 import Auth from './features/auth.jsx'
 import First from './pages/first.jsx'
 import Channel from './pages/channel.jsx'
+import NewChannel from './pages/newChannel.jsx'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/login'  element={<Login/>}  />
         <Route path='/home'   element={<Auth><Home/></Auth>}/>
         <Route path='/channel/:channel_id'   element={<Auth><Channel/></Auth>}/>
+        <Route path='/newchannel'   element={<Auth><NewChannel/></Auth>}/>
       </Routes>
     </BrowserRouter>
   )
