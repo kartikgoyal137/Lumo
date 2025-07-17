@@ -9,6 +9,7 @@ import Blob4 from '../assets/blob/blob4.svg'
 
 export default function Signup() {
     const navigate = useNavigate()
+    const [error, setError] = useState('')
 
     const [FormData, setFormData] = useState({
         email: '',
@@ -31,7 +32,11 @@ export default function Signup() {
             navigate('/home')
         }
         catch (err) {
-            console.error(err.message)
+            if (err.response && err.response.data && err.response.data.error) {
+                setError(err.response.data.error)
+            } else {
+                setError('Login failed. Please try again.')
+            }
         }
     }
 
@@ -68,6 +73,7 @@ export default function Signup() {
         <div className="col-8 col-lg-5 ms-5 mt-4 me-0">
             <form onSubmit={handleSubmit} className="container p-3 shadow rounded-5" style={{ maxWidth: '400px', marginTop:'6em', border:  '4px solid #ff7f50', borderRadius: '0%', background: 'white' }}>
             <h3 className="mb-4 text-center">Login</h3>
+{error && <div className="alert alert-danger text-center">{error}</div>}
 
             <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email address</label>

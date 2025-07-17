@@ -10,51 +10,48 @@ dotenv.config()
 
 const SECRET_KEY = process.env.SECRET_KEY
 
-
-
-
-router.post('/signup', async (req,res) => { //signup
-    const existing = await User.findOne({ email : req.body.email })
+router.post('/signup', async (req, res) => { // signup
+    const existing = await User.findOne({ email: req.body.email })
     if (existing) {
-        return res.status(400).json({ error: 'User already exists' })
+        return res.status(409).json({ error: 'User already exists' }) // 409 Conflict
     }
 
     try {
-        const {name, email} = req.body
+        const { name, email } = req.body
         const password = await hash(req.body.password)
-        const newUser = new User({name, email, password})
+        const newUser = new User({ name, email, password })
         await newUser.save()
         console.log('Entry done')
-        res.send()
-    }
-    catch (err) {
+        res.status(201).send('User created') // 201 Created
+    } catch (err) {
         console.log('failed', err)
-        res.send('error in updating database')
+        res.status(500).json({ error: 'Error in updating database' }) // 500 Server error
     }
 })
 
-router.post('/auth', async (req,res) => { //login
-    const {email, password} = req.body
+router.post('/auth', async (req, res) => { // login
+    const { email, password } = req.body
     try {
-        const user = await User.findOne({email})
-        if(!user){
+        const user = await User.findOne({ email })
+        if (!user) {
             console.log('no user')
-            return res.json({error : 'User not found!'})
+            return res.status(404).json({ error: 'User not found!' }) // 404 Not Found
         }
+
         const isMatch = await bcrypt.compare(password, user.password)
-        if(!isMatch) {
-            console.log('wrong password ')
-            return res.json({error : 'Incorrect password!'})
+        if (!isMatch) {
+            console.log('wrong password')
+            return res.status(401).json({ error: 'Incorrect password!' }) // 401 Unauthorized
         }
+
         console.log(user)
-        const userInfo = {email : user.email, id : user.id, name : user.name}
-        const token = jwt.sign(userInfo, SECRET_KEY, {expiresIn: "10h"})
-        
-        return res.json({token, userInfo})
-    }
-    catch (err) { 
+        const userInfo = { email: user.email, id: user.id, name: user.name }
+        const token = jwt.sign(userInfo, SECRET_KEY, { expiresIn: "10h" })
+
+        return res.status(200).json({ token, userInfo }) // 200 OK
+    } catch (err) {
         console.log(err)
-        res.send(err)
+        res.status(500).json({ error: 'Login failed due to server error' }) // 500 Server error
     }
 })
 
