@@ -15,7 +15,7 @@ export default function Home() {
   const [exploreChannels, setExploreChannels] = useState([])
 
   async function fetchChannel(id, num){
-    const res = await axios.get(`http://localhost:4000/api/channel/${id}/${num}`, {headers: {Authorization : `Bearer ${myToken}` }})
+    const res = await axios.get(`https://lumo-backend-dswp.onrender.com/api/channel/${id}/${num}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data
     if(num===1){
       setMyChannels(data)
@@ -37,7 +37,7 @@ export default function Home() {
   }, [])
 
   async function handleJoin(id) {
-  const res = await axios.post(`http://localhost:4000/api/channel/${user.id}/join`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
+  const res = await axios.post(`https://lumo-backend-dswp.onrender.com/api/channel/${user.id}/join`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
   console.log(res.data)
   fetchChannel(user.id, 1)
     fetchChannel(user.id, 0)
@@ -45,7 +45,7 @@ export default function Home() {
   }
   
   async function handleLeave(id) {
-    const res = await axios.post(`http://localhost:4000/api/channel/${user.id}/leave`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
+    const res = await axios.post(`https://lumo-backend-dswp.onrender.com/api/channel/${user.id}/leave`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
     console.log(res.data)
     fetchChannel(user.id, 1)
     fetchChannel(user.id, 0)

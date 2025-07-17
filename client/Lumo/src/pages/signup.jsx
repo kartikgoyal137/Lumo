@@ -25,7 +25,7 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault()
-            const res = await axios.post('http://localhost:4000/api/login/signup', FormData)
+            const res = await axios.post('https://lumo-backend-dswp.onrender.com/api/login/signup', FormData)
             const data = res.data
             navigate('/login')
         }

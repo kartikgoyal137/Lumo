@@ -24,7 +24,7 @@ export default function Signup() {
         try {
             e.preventDefault()
             localStorage.clear()
-            const res = await axios.post('http://localhost:4000/api/login/auth', FormData)
+            const res = await axios.post('https://lumo-backend-dswp.onrender.com/api/login/auth', FormData)
             const data = res.data 
             localStorage.setItem('token', JSON.stringify(data.token)) //store in redux
             localStorage.setItem('info', JSON.stringify(data.userInfo)) //store in redux

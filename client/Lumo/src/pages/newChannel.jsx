@@ -25,7 +25,7 @@ export default function Signup() {
     const createChannel = async (e) => {
         try {
             e.preventDefault()
-            const res = await axios.post(`http://localhost:4000/api/channel/${user.id}/create`, FormData, {headers: {Authorization : `Bearer ${myToken}` }})
+            const res = await axios.post(`https://lumo-backend-dswp.onrender.com/api/channel/${user.id}/create`, FormData, {headers: {Authorization : `Bearer ${myToken}` }})
             setFormData({name: '', description: ''})
             navigate('/home')
         }
