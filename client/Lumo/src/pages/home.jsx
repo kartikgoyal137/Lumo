@@ -15,7 +15,7 @@ export default function Home() {
   const [exploreChannels, setExploreChannels] = useState([])
 
   async function fetchChannel(id, num){
-    const res = await axios.get(`http://localhost:4000/api/channel/${id}/${num}`)
+    const res = await axios.get(`http://localhost:4000/api/channel/${id}/${num}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data
     if(num===1){
       setMyChannels(data)

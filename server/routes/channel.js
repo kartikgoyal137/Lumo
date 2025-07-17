@@ -12,7 +12,7 @@ const SECRET_KEY = process.env.SECRET_KEY
 
 //add member, remove member, create channel, get channel data, get specific channel data
 
-router.get('/info/:id', async (req,res) => {
+router.get('/info/:id', verify, async (req,res) => {
     const cID = req.params.id
     
     try {
@@ -25,7 +25,7 @@ router.get('/info/:id', async (req,res) => {
     }
 })
 
-router.get('/message/:id', async (req, res) => {
+router.get('/message/:id',verify, async (req, res) => {
   try {
     const messages = await Message.find({ channel: req.params.id })
       .populate('sender', 'name')
@@ -37,7 +37,7 @@ router.get('/message/:id', async (req, res) => {
   }
 })
 
-router.get('/members/:id', async (req, res) => {
+router.get('/members/:id',verify, async (req, res) => {
   try {
     const channel = await Channel.findById(req.params.id)
       .populate('members', 'name')
@@ -51,7 +51,7 @@ router.get('/members/:id', async (req, res) => {
 
 
 
-router.get('/:user_id/:num', async (req,res) => {
+router.get('/:user_id/:num',verify, async (req,res) => {
     const userId = req.params.user_id
     const num = Number(req.params.num)
     

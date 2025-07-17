@@ -52,13 +52,13 @@ export default function Channel() {
   }
 
   const getChannel = async () => {
-    const res = await axios.get(`http://localhost:4000/api/channel/info/${channel_id}`)
+    const res = await axios.get(`http://localhost:4000/api/channel/info/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data
     setChannelInfo(data.info)
   }
 
   const getMessage = async () => {
-    const res = await axios.get(`http://localhost:4000/api/channel/message/${channel_id}`)
+    const res = await axios.get(`http://localhost:4000/api/channel/message/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data.info
     setMessages(data)
     console.log(data)
@@ -73,7 +73,7 @@ export default function Channel() {
 }, [messages])
 
   const getMembers = async () => {
-    const res = await axios.get(`http://localhost:4000/api/channel/members/${channel_id}`)
+    const res = await axios.get(`http://localhost:4000/api/channel/members/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data.info.members
     setMembers(data)
   }
