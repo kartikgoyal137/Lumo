@@ -9,7 +9,9 @@ import { useRef } from "react"
 import MemberCard from "../components/memberCard.jsx"
 
 
-const socket = io('http://localhost:4000')
+const socket = io("https://lumo-backend-dswp.onrender.com", {
+  transports: ['websocket'],
+})
 
 export default function Channel() {
   const navigate = useNavigate()
