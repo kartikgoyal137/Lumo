@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { int } = require('three/tsl')
 
 const channelSchema = new mongoose.Schema({
     name : { type: String, required: true},
