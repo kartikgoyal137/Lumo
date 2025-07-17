@@ -9,7 +9,8 @@ const channelRouter = require('./routes/channel.js')
 
 dotenv.config()
 const app = express()
-app.use(cors({ origin: "https://chatlumo.netlify.app", credentials: true }))
+app.use(cors({ origin: "https://chatlumo.netlify.app", credentials: true, methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'] }))
 app.use(express.json())
 
 
