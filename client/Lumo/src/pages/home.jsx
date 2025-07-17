@@ -25,6 +25,12 @@ export default function Home() {
     }
   }
 
+  const Logout = async () => {
+    localStorage.clear('token')
+    localStorage.clear('info')
+    navigate('/login')
+  }
+
   useEffect(() => {
     fetchChannel(user.id, 1)
     fetchChannel(user.id, 0)
@@ -68,19 +74,28 @@ export default function Home() {
     <div className="collapse navbar-collapse" id="navbarContent">
       <ul className="navbar-nav ms-auto">
         <li className="nav-item me-2">
-          <a className="nav-link active btn btn-dark me-4" style={{color: "white"}} href="#">Hey! {user?.name || 'User'}</a>
-        </li>
-        <li className="nav-item me-2">
           <a className="nav-link active btn btn-dark me-4" onClick={newChannel} style={{color: "white"}} href="#">Create Channel</a>
         </li>
-        
+        <li className="nav-item me-2">
+          <a className="nav-link active btn btn-dark me-4" style={{color: "white"}} href="#" onClick={Logout}>Logout</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
 
-  <div className="container-fluid w-100 h-100" style={{backgroundImage: `url(${bg3})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '92vh'}}>
+  <div className="container-fluid w-100 h-100" style={{position: 'relative', minHeight: '92vh'}}>
+
+  <img src={bg4} style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      zIndex: -1
+    }}/>
 
   <div className="container pt-4 mb-3">
     <h2>My Channels</h2>

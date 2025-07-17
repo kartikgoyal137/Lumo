@@ -104,7 +104,7 @@ export default function Channel() {
 </nav>
 
 
-<div className="container-fluid px-5 py-4" style={{overflowX : 'hidden', background: "#333333"}}>
+<div className="container-fluid px-5 py-4" style={{overflowX : 'hidden', background: "#333333", zIndex: '50'}}>
   <div className="row">
 
     <div className="col-2 rounded-4 mx-3 d-none d-md-block" style={{border: '4px solid #ff7f50', background: "whitesmoke", overflowY: 'auto'}}>
@@ -112,7 +112,7 @@ export default function Channel() {
   <MemberCard name={ele.name} isOnline={ele.status}/>
 )}
   </div>
-    <div className="col-md-6 col-10 rounded-4 mx-3" style={{position: 'relative', border: '5px solid #ff7f50', minHeight: '75vh', background: "whitesmoke"}}>
+    <div className="col-md-6 col-10 rounded-4 mx-3 pd-5" style={{zIndex: '60', position: 'relative', border: '5px solid #ff7f50', minHeight: '80vh', background: "whitesmoke"}}>
 
 <div className="overflow-auto" style={{ maxHeight: '60vh'}}>
   {messages.map((msg, i) => (
@@ -156,15 +156,7 @@ export default function Channel() {
 
 </div>
 
-
-
-
-
-
-
-
-
-<div className="container-fluid" style={{overflowX : 'hidden',position:'fixed', bottom: '0px', background: '#ff7f50', minHeight: '7vh', color: 'white', zIndex: '10'}}>
+<div className="container-fluid" style={{overflowX : 'hidden',position:'fixed', bottom: '0px', background: '#333333', minHeight: '8vh', color: 'white', zIndex: '10'}}>
 
 </div>
         </>
