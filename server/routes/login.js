@@ -5,27 +5,27 @@ const hash = require('../utils/hash.js')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const dotenv = require('dotenv')
-
-dotenv.config()
+ 
+dotenv.config() 
 
 const SECRET_KEY = process.env.SECRET_KEY
-
+ 
 router.post('/signup', async (req, res) => { // signup
     const existing = await User.findOne({ email: req.body.email })
     if (existing) {
-        return res.status(409).json({ error: 'User already exists' }) // 409 Conflict
+        return res.status(409).json({ error: 'User already exists' })
     }
 
     try {
-        const { name, email } = req.body
+        const { name, email } = req.body 
         const password = await hash(req.body.password)
         const newUser = new User({ name, email, password })
         await newUser.save()
         console.log('Entry done')
-        res.status(201).send('User created') // 201 Created
+        res.status(201).send('User created') 
     } catch (err) {
         console.log('failed', err)
-        res.status(500).json({ error: 'Error in updating database' }) // 500 Server error
+        res.status(500).json({ error: 'Error in updating database' }) 
     }
 })
 
@@ -35,13 +35,13 @@ router.post('/auth', async (req, res) => { // login
         const user = await User.findOne({ email })
         if (!user) {
             console.log('no user')
-            return res.status(404).json({ error: 'User not found!' }) // 404 Not Found
+            return res.status(404).json({ error: 'User not found!' }) 
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
             console.log('wrong password')
-            return res.status(401).json({ error: 'Incorrect password!' }) // 401 Unauthorized
+            return res.status(401).json({ error: 'Incorrect password!' }) 
         }
 
         console.log(user)
@@ -51,7 +51,7 @@ router.post('/auth', async (req, res) => { // login
         return res.status(200).json({ token, userInfo }) // 200 OK
     } catch (err) {
         console.log(err)
-        res.status(500).json({ error: 'Login failed due to server error' }) // 500 Server error
+        res.status(500).json({ error: 'Login failed due to server error' })
     }
 })
 
