@@ -53,6 +53,10 @@ export default function Channel() {
     setMessage(e.target.value)
   }
 
+  const goHome = () => {
+    navigate('/home')
+  }
+
   const getChannel = async () => {
     const res = await axios.get(`https://lumo-backend-dswp.onrender.com/api/channel/info/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data
@@ -96,6 +100,9 @@ export default function Channel() {
 
     <div className="collapse navbar-collapse" id="navbarContent">
       <ul className="navbar-nav ms-auto">
+        <li className="nav-item me-2">
+          <a className="nav-link active btn btn-light me-4" style={{background: "white"}} href="#" onClick={goHome}>Home</a>
+        </li>
         <li className="nav-item me-2">
           <a className="nav-link active btn btn-light me-4" style={{background: "white"}} href="https://github.com/kartikgoyal137/">github/kartikgoyal137</a>
         </li>

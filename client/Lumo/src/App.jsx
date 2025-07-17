@@ -6,9 +6,19 @@ import Auth from './features/auth.jsx'
 import First from './pages/first.jsx'
 import Channel from './pages/channel.jsx'
 import NewChannel from './pages/newChannel.jsx'
+import { useEffect } from 'react'
 
 
 function App() {
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    fetch("https://lumo-backend-dswp.onrender.com")
+  }, 1000 * 60 * 14) // every 14 mins
+
+  return () => clearInterval(interval)
+}, [])
+
 
   return (
     <BrowserRouter>
