@@ -22,6 +22,10 @@ export default function Signup() {
         setFormData({...FormData, [e.target.name]: e.target.value})
     }
 
+    const goHome = () => {
+    navigate('/home')
+  }
+
     const createChannel = async (e) => {
         try {
             e.preventDefault()
@@ -50,6 +54,9 @@ export default function Signup() {
 
     <div className="collapse navbar-collapse" id="navbarContent">
       <ul className="navbar-nav ms-auto">
+        <li className="nav-item me-2">
+          <a className="nav-link active btn btn-light me-4" style={{background: "white"}} href="#" onClick={goHome}>Home</a>
+        </li>
         <li className="nav-item me-2">
           <a className="nav-link active btn btn-light me-4" style={{background: "white"}} href="https://github.com/kartikgoyal137/">github/kartikgoyal137</a>
         </li>
