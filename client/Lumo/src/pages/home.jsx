@@ -122,7 +122,7 @@ export default function Home() {
     <div className="container-fluid py-2">
       <div className="row">
         {exploreChannels.map(c => (
-          <div className="col-xxl-3 col-5 mb-1" key={c.id}>
+          <div className="col-xxl-3 col-md-6 col-12 mb-1" key={c.id}>
             <Card
               id={c.id}
               channel={{
