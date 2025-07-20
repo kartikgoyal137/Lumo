@@ -13,17 +13,14 @@ function initSocket(app) {
   })
 
   io.on('connection', socket => {
-    console.log('connected user with socket')
 
     socket.on('join-channel', roomId => {
       socket.join(roomId)
-      console.log('channel joined')
     })
 
     socket.on('send-message', async ({sender, channel_id, message }) => {
       const user = await User.findById(sender)
       const name = user.name
-      console.log('message sent')
       const newMessage = new Message({
       sender : sender,
       content: message ,
@@ -35,7 +32,6 @@ function initSocket(app) {
     })
 
     socket.on('disconnect', () => {
-      console.log('user is disconnected from socket')
     })
   })
 

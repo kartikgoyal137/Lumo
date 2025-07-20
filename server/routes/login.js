@@ -21,10 +21,8 @@ router.post('/signup', async (req, res) => { // signup
         const password = await hash(req.body.password)
         const newUser = new User({ name, email, password })
         await newUser.save()
-        console.log('Entry done')
         res.status(201).send('User created') 
     } catch (err) {
-        console.log('failed', err)
         res.status(500).json({ error: 'Error in updating database' }) 
     }
 })
@@ -34,23 +32,19 @@ router.post('/auth', async (req, res) => { // login
     try {
         const user = await User.findOne({ email })
         if (!user) {
-            console.log('no user')
             return res.status(404).json({ error: 'User not found!' }) 
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
-            console.log('wrong password')
             return res.status(401).json({ error: 'Incorrect password!' }) 
         }
 
-        console.log(user)
         const userInfo = { email: user.email, id: user.id, name: user.name }
         const token = jwt.sign(userInfo, SECRET_KEY, { expiresIn: "10h" })
 
         return res.status(200).json({ token, userInfo }) // 200 OK
     } catch (err) {
-        console.log(err)
         res.status(500).json({ error: 'Login failed due to server error' })
     }
 })

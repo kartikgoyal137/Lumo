@@ -43,7 +43,7 @@ export default function Signup() {
 <nav className="navbar navbar-expand-lg" style={{background: '#ff7f50', zIndex: '10'}}>
   <div className="container-fluid" >
     <a className="navbar-brand ms-3" href="#" style={{color: "white", fontSize: "1.6em"}}><b>LUMO</b></a>
-    <a className="nav-link active mx-auto d-sm-block d-none" style={{color: "white"}} href="#">Your space to connect, effortlessly!</a>
+  
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
       <span className="navbar-toggler-icon"></span>
     </button>

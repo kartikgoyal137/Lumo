@@ -11,6 +11,7 @@ import MemberCard from "../components/memberCard.jsx"
 
 const socket = io("https://lumo-backend-dswp.onrender.com", {
   transports: ['websocket'],
+  withCredentials: true
 })
 
 export default function Channel() {
@@ -67,7 +68,6 @@ export default function Channel() {
     const res = await axios.get(`https://lumo-backend-dswp.onrender.com/api/channel/message/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data.info
     setMessages(data)
-    console.log(data)
   }
 
   
@@ -93,7 +93,7 @@ export default function Channel() {
 <nav className="navbar navbar-expand-lg" style={{background: '#ff7f50', overflowX : 'hidden'}}>
   <div className="container-fluid" >
     <a className="navbar-brand ms-3" href="#" style={{color: "white", fontSize: "1.6em"}}><b>LUMO</b></a>
-    <a className="nav-link active mx-auto" style={{color: "white"}} href="#">Your space to connect, effortlessly!</a>
+
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
       <span className="navbar-toggler-icon"></span>
     </button>

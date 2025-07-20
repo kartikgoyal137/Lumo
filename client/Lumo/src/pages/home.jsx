@@ -38,7 +38,6 @@ export default function Home() {
 
   async function handleJoin(id) {
   const res = await axios.post(`https://lumo-backend-dswp.onrender.com/api/channel/${user.id}/join`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
-  console.log(res.data)
   fetchChannel(user.id, 1)
     fetchChannel(user.id, 0)
 
@@ -46,7 +45,6 @@ export default function Home() {
   
   async function handleLeave(id) {
     const res = await axios.post(`https://lumo-backend-dswp.onrender.com/api/channel/${user.id}/leave`, {channel_id : id}, {headers: {Authorization : `Bearer ${myToken}` }})
-    console.log(res.data)
     fetchChannel(user.id, 1)
     fetchChannel(user.id, 0)
   }
@@ -66,7 +64,6 @@ export default function Home() {
 <nav className="navbar navbar-expand-lg " style={{background: '#f6f6f6'}}>
   <div className="container-fluid" >
     <a className="navbar-brand ms-3" href="#" style={{fontSize: "1.6em"}}><b>LUMO</b></a>
-    <a className="nav-link active mx-auto" style={{}} href="#">Your space to connect, effortlessly!</a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
       <span className="navbar-toggler-icon"></span>
     </button>
