@@ -8,6 +8,7 @@ import Blob3 from '../assets/blob/blob3.svg'
 import Blob4 from '../assets/blob/blob4.svg'
 
 export default function First() {
+  const url = process.env.REACT_APP_url
     const navigate = useNavigate()
 
     function handleLogin() {

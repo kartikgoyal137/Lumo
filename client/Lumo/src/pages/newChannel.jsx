@@ -9,6 +9,7 @@ import Blob4 from '../assets/blob/blob4.svg'
 
 export default function Signup() {
     const navigate = useNavigate()
+    const url = process.env.REACT_APP_url
     const user = JSON.parse(localStorage.getItem('info'))
     const [error, setError] = useState('')
     const myToken = JSON.parse(localStorage.getItem('token'))
@@ -29,7 +30,7 @@ export default function Signup() {
     const createChannel = async (e) => {
         try {
             e.preventDefault()
-            const res = await axios.post(`https://lumo-backend-dswp.onrender.com/api/channel/${user.id}/create`, FormData, {headers: {Authorization : `Bearer ${myToken}` }})
+            const res = await axios.post(`${url}/api/channel/${user.id}/create`, FormData, {headers: {Authorization : `Bearer ${myToken}` }})
             setFormData({name: '', description: ''})
             navigate('/home')
         }

@@ -9,6 +9,7 @@ import Blob4 from '../assets/blob/blob4.svg'
 
 export default function Signup() {
     const navigate = useNavigate()
+    const url = process.env.REACT_APP_url
     const [error, setError] = useState('')
 
     const [FormData, setFormData] = useState({
@@ -24,7 +25,7 @@ export default function Signup() {
         try {
             e.preventDefault()
             localStorage.clear()
-            const res = await axios.post('https://lumo-backend-dswp.onrender.com/api/login/auth', FormData)
+            const res = await axios.post(`${url}/api/login/auth`, FormData)
             const data = res.data 
             localStorage.setItem('token', JSON.stringify(data.token)) //store in redux
             localStorage.setItem('info', JSON.stringify(data.userInfo)) //store in redux

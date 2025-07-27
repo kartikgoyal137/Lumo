@@ -8,6 +8,7 @@ import Blob3 from '../assets/blob/blob3.svg'
 import Blob4 from '../assets/blob/blob4.svg'
 
 export default function Signup() {
+  const url = process.env.REACT_APP_url
     const navigate = useNavigate()
     const [error, setError] = useState('')
     const [FormData, setFormData] = useState({
@@ -25,7 +26,7 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault()
-            const res = await axios.post('https://lumo-backend-dswp.onrender.com/api/login/signup', FormData)
+            const res = await axios.post(`${url}/api/login/signup`, FormData)
             const data = res.data
             navigate('/login')
         }

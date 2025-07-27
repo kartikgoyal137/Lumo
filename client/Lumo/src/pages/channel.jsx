@@ -9,12 +9,13 @@ import { useRef } from "react"
 import MemberCard from "../components/memberCard.jsx"
 
 
-const socket = io("https://lumo-backend-dswp.onrender.com", {
+const socket = io(`${url}`, {
   transports: ['websocket'],
   withCredentials: true
 })
 
 export default function Channel() {
+  const url = process.env.REACT_APP_url
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('info'))
   const myToken = JSON.parse(localStorage.getItem('token'))
@@ -59,13 +60,13 @@ export default function Channel() {
   }
 
   const getChannel = async () => {
-    const res = await axios.get(`https://lumo-backend-dswp.onrender.com/api/channel/info/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
+    const res = await axios.get(`${url}/api/channel/info/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data
     setChannelInfo(data.info)
   }
 
   const getMessage = async () => {
-    const res = await axios.get(`https://lumo-backend-dswp.onrender.com/api/channel/message/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
+    const res = await axios.get(`${url}/api/channel/message/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data.info
     setMessages(data)
   }
@@ -79,7 +80,7 @@ export default function Channel() {
 }, [messages])
 
   const getMembers = async () => {
-    const res = await axios.get(`https://lumo-backend-dswp.onrender.com/api/channel/members/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
+    const res = await axios.get(`${url}/api/channel/members/${channel_id}`, {headers: {Authorization : `Bearer ${myToken}` }})
     const data = res.data.info.members
     setMembers(data)
   }
